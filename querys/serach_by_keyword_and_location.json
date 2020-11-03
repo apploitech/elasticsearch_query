@@ -1,0 +1,118 @@
+{
+    "query": {
+        "function_score": {
+            "query": {
+                "bool": {
+                    "must": [
+                        {
+                            "match": {
+                                "combinated_fields": {
+                                    "query": "cna",
+                                    "boost": 0.001
+                                }
+                            }
+                        }
+                    ],
+                    "should": [
+                        {
+                            "match": {
+                                "name": {
+                                    "query": "cna",
+                                    "boost": 1.2
+                                }
+                            }
+                        },
+                        {
+                            "match": {
+                                "description": {
+                                    "query": "cna",
+                                    "boost": 0.2
+                                }
+                            }
+                        },
+                        {
+                            "match": {
+                                "brand_name": {
+                                    "query": "cna",
+                                    "boost": 0.2
+                                }
+                            }
+                        },
+                        {
+                            "match": {
+                                "others_fields": {
+                                    "query": "cna",
+                                    "boost": 0.1
+                                }
+                            }
+                        },
+                        {
+                            "match": {
+                                "doc_type": {
+                                    "query": "backfilling",
+                                    "boost": 0.1
+                                }
+                            }
+                        },
+                        {
+                            "match": {
+                                "doc_type": {
+                                    "query": "job",
+                                    "boost": 2.5
+                                }
+                            }
+                        },
+                        {
+                            "match": {
+                                "doc_type": {
+                                    "query": "preferredjob",
+                                    "boost": 4
+                                }
+                            }
+                        }
+                    ],
+                    "must_not": [],
+                    "filter": [
+                        {
+                            "terms": {
+                                "doc_type": [
+                                    "job",
+                                    "preferredjob",
+                                    "backfilling"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "functions": [
+                {
+                    "gauss": {
+                        "location": {
+                            "origin": [
+                                -95.3698028,
+                                29.7604267
+                            ],
+                            "scale": "5mi",
+                            "offset": "50mi",
+                            "decay": 0.75
+                        }
+                    }
+                }
+            ],
+            "score_mode": "avg",
+            "boost_mode": "multiply",
+            "min_score": 1.01
+        }
+    },
+    "explain": true,
+    "_source": {
+        "exclude": [
+            "jd_jt_es",
+            "jd_jt_en",
+            "jd_jt",
+            "others_fields",
+            "combinated_fields"
+        ]
+    }
+}

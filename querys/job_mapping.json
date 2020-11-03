@@ -1,0 +1,174 @@
+{
+    "mappings": {
+        "job": {
+            "properties": {
+                "id": {
+                    "type": "text"
+                },
+                "location": {
+                    "type": "geo_point"
+                },
+                "published_date": {
+                    "type": "date",
+                    "format": "yyyy-MM-dd"
+                },
+                "brand_name": {
+                    "type": "text",
+                    "analyzer": "english"
+                },
+                "name": {
+                    "type": "text",
+                    "analyzer": "english"
+                },
+                "name_es": {
+                    "type": "text",
+                    "analyzer": "rebuilt_spanish"
+                },
+                "description": {
+                    "type": "text",
+                    "analyzer": "english"
+                },
+                "description_es": {
+                    "type": "text",
+                    "analyzer": "rebuilt_spanish"
+                },
+                "jd_jt_es": {
+                    "type": "text",
+                    "analyzer": "rebuilt_spanish"
+                },
+                "jd_jt_en": {
+                    "type": "text",
+                    "analyzer": "english"
+                },
+                "jd_jt": {
+                    "type": "text"
+                },
+                "combinated_fields": {
+                    "type": "text"
+                },
+                "others_fields": {
+                    "type": "text"
+                },
+                "city": {
+                    "type": "keyword",
+                    "similarity": "scripted_only_boost_weight"
+                },
+                "state": {
+                    "type": "keyword",
+                    "similarity": "scripted_only_boost_weight"
+                },
+                "industry": {
+                    "type": "keyword",
+                    "similarity": "scripted_only_boost_weight"
+                },
+                "job_type": {
+                    "type": "keyword",
+                    "similarity": "scripted_only_boost_weight"
+                },
+                "doc_type": {
+                    "type": "keyword",
+                    "similarity": "scripted_only_boost_weight"
+                },
+                "team_id": {
+                    "type": "integer"
+                },
+                "uid": {
+                    "type": "text"
+                },
+                "aggregated": {
+                    "type": "boolean"
+                },
+                "preferred": {
+                    "type": "boolean"
+                },
+                "zip": {
+                    "type": "text",
+                    "analyzer": "english"
+                },
+                "address": {
+                    "type": "text"
+                },
+                "source": {
+                    "type": "text"
+                },
+                "company_logo_url": {
+                    "type": "text"
+                },
+                "hidden": {
+                    "type": "boolean"
+                },
+                "external_url": {
+                    "type": "text"
+                },
+                "job_code": {
+                    "type": "text",
+                    "analyzer": "english"
+                },
+                "number_of_questions": {
+                    "type": "integer"
+                },
+                "apply_method": {
+                    "type": "keyword",
+                    "similarity": "scripted_only_boost_weight"
+                }
+            }
+        }
+    },
+    "settings": {
+        "analysis": {
+            "filter": {
+                "english_stop": {
+                    "type": "stop",
+                    "stopwords": "_english_"
+                },
+                "light_english_stemmer": {
+                    "type": "stemmer",
+                    "language": "light_english"
+                },
+                "english_possessive_stemmer": {
+                    "type": "stemmer",
+                    "language": "possessive_english"
+                },
+                "spanish_stop": {
+                    "type": "stop",
+                    "stopwords": "_spanish_"
+                },
+                "spanish_stemmer": {
+                    "type": "stemmer",
+                    "language": "light_spanish"
+                }
+            },
+            "analyzer": {
+                "english": {
+                    "tokenizer": "standard",
+                    "filter": [
+                        "english_possessive_stemmer",
+                        "lowercase",
+                        "english_stop",
+                        "light_english_stemmer",
+                        "asciifolding"
+                    ]
+                },
+                "rebuilt_spanish": {
+                    "tokenizer": "standard",
+                    "filter": [
+                        "lowercase",
+                        "spanish_stop",
+                        "spanish_stemmer"
+                    ]
+                }
+            }
+        },
+        "similarity": {
+            "scripted_only_boost_weight": {
+                "type": "scripted",
+                "weight_script": {
+                    "source": "return query.boost;"
+                },
+                "script": {
+                    "source": "return weight;"
+                }
+            }
+        }
+    }
+}
